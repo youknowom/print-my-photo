@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Print My Photo
 
-## Getting Started
+Print My Photo is a browser-first utility that helps users prepare photographs for printing at an exact physical size and arrange multiple copies on a printable sheet.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Exact Dimensions**: Prepare photos at verified official sizes (e.g. 35×45 mm, 2×2 in, 50×70 mm) or any custom dimensions.
+- **Client-Side Processing**: All cropping, canvas rendering, grid calculation, and PDF generation happen in the user's browser. No photos are uploaded to any server.
+- **Smart Layout Engine**: Calculates rows, columns, and maximum fitting copies on standard paper sizes (A4, A5, US Letter, 4×6 in, 5×7 in) with adjustable margins and spacing.
+- **Dual Export Modes**: Download a vector-positioned PDF with physical page dimensions or raster images (JPG/PNG) at 300 DPI.
+- **WYSIWYG Print Preview**: The exact same layout calculation engine powers the on-screen preview, PDF generator, and image exporter.
+- **No Registration**: Immediate utility access with zero account creation or onboarding barriers.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS v4 + Base UI / shadcn
+- **Icons**: Lucide React
+- **Image Cropping**: `react-easy-crop`
+- **PDF Generation**: `jspdf`
+- **Testing**: `vitest`
+
+## Architecture & Privacy Model
+
+This application intentionally uses **no image-processing backend**.
+
+```
+Client-Side Processing Pipeline
+┌──────────────┐     ┌──────────────┐     ┌──────────────────┐     ┌──────────────────┐
+│ Image File   │ ──> │ Canvas Crop  │ ──> │ Layout Engine    │ ──> │ jsPDF / Canvas   │
+│ (User device)│     │ (HTML Canvas)│     │ (Exact mm grid)  │     │ (Download File)  │
+└──────────────┘     └──────────────┘     └──────────────────┘     └──────────────────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Local Object URLs**: Images loaded into memory use temporary `blob:` URLs that are revoked upon session reset.
+2. **Zero Uploads**: Images are never sent over the network.
+3. **No External Fonts/Trackers**: Typography is self-hosted via `next/font`, eliminating third-party analytics or external requests.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Install dependencies
+npm install
 
-## Learn More
+# Run development server
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+# Run unit tests
+npm test
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Run TypeScript typecheck
+npm run typecheck
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run linter
+npm run lint
 
-## Deploy on Vercel
+# Build for production
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Verified Preset Provenance
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Preset | Dimensions | Source Authority | Verification Date |
+| --- | --- | --- | --- |
+| **US Passport** | 51 × 51 mm (2×2 in) | U.S. Department of State | 2026-08-24 |
+| **UK Passport** | 35 × 45 mm | GOV.UK | 2026-08-24 |
+| **India Passport** | 35 × 45 mm | Passport Seva, Govt of India | 2026-08-24 |
+| **Canada Passport** | 50 × 70 mm | Government of Canada | 2026-08-24 |
+| **Schengen Visa** | 35 × 45 mm | EU Schengen Regulations | 2026-08-24 |
+| **Japan Passport** | 35 × 45 mm | Ministry of Foreign Affairs of Japan | 2026-08-24 |
+
+## Future Roadmap
+
+- [ ] Batch multi-photo sheet arrangements
+- [ ] Direct Web Share API support on mobile devices
+- [ ] ICC colour profile support for professional photography workflows
