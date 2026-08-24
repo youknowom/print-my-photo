@@ -1,0 +1,37 @@
+# CodeRabbit Configuration
+# Reference: https://docs.coderabbit.ai/guides/configure-coderabbit
+
+language: "en-US"
+
+early_access: false
+
+reviews:
+  # Enable automated code reviews on pull requests
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "main"
+
+  # Path-specific review rules
+  path_filters:
+    - "!node_modules/**"
+    - "!.next/**"
+    - "!package-lock.json"
+
+  # Custom guidelines for reviewers
+  instructions: |
+    - Ensure all Next.js App Router conventions are respected.
+    - Strict privacy rule: Ensure no user photo data, EXIF metadata, or personal files are sent over the network or uploaded to servers. All image processing must remain 100% client-side.
+    - Ensure all photo preset dimensions match official authoritative sources.
+    - Check for memory leaks in canvas/image object URL lifecycles (ensure `URL.revokeObjectURL` and canvas dimensions cleanup).
+    - Ensure accessibility (a11y) standards, keyboard navigability, and responsive mobile layouts are maintained.
+
+chat:
+  auto_reply: true
