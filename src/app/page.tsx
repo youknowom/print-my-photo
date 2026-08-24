@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Shield, Monitor, Ruler, Upload, Crop, Grid3X3, Download } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { getVerifiedPresets } from "@/data/photo-presets";
 import { formatDimensionsMm } from "@/lib/dimensions";
 
